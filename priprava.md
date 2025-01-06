@@ -395,5 +395,8 @@ Prednaska 8.
    * properties urcuju co tam moze byt v tom objekte a potom ich napr type alebo description rozne properties mozeme ma numerical constrains maximum minimum atd
    * required je list poloziek ktore tam su povinne
    * list validation cez napr maxItems contains uniqueItems pre urcity property
-   * tuple validation kde kazdy jeden v poly vieme validovat aky ma typ cez "items" : [{"type": "number"} ...., {"type": "string"}]
+   * tuple validation kde kazdy jeden v poly vieme validovat aky ma typ cez "items" : [{"type": "number"} ...., {"type": "string", "enum": ["street", "avenue"]}]
+   * cez aditional items vieme napr povedat ze iba stringy mozu byt additional
+
+   * podpora pre external schema aby sme nemuseli mat brutalne velke fily kde si vieme spravit "$ref": "https://definicia-schemy.json""
 
