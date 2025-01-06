@@ -379,4 +379,10 @@ The <xsl:apply-templates> element instructs the XSLT processor to:
    * Select nodes in the XML document based on the current context.
    * Apply templates to those selected nodes, based on matching patterns defined elsewhere in the XSLT stylesheet.
 
+Prednaska 8.
+
+### JSON
+   * Je to string kde pouzivame utf-8 a potom \escapes kde mozeme pouzit \u4hex number
+   * No octal or hexadecimal digits, decimal only
+
 
