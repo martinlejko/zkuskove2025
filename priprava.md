@@ -400,3 +400,5 @@ Prednaska 8.
 
    * podpora pre external schema aby sme nemuseli mat brutalne velke fily kde si vieme spravit "$ref": "https://definicia-schemy.json""
 
+   * ak chceme validovat nieco vacej ako zakladne typy pouzivame formats to nam umoznuje validovat --> iri uri date-time email a tak dalej
+
