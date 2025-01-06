@@ -359,6 +359,8 @@ XML Infoset
 ### XSLT
    * ak chceme HTML reprezentaci dokumentu z XML
    * input is multiple or single XML and the output is one or more HTML RDF Turtle or TXT
+   * modes umoznuju spracovat rovnake nodes ale different ways
+   * a potom mame este switch alebo for each 
    XSLT stylesheet
       * is an XML document
       * stylesheet root element
