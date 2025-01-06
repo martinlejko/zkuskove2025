@@ -384,5 +384,16 @@ Prednaska 8.
 ### JSON
    * Je to string kde pouzivame utf-8 a potom \escapes kde mozeme pouzit \u4hex number
    * No octal or hexadecimal digits, decimal only
+   * Najviac sa to pouziva pre API alebo pre ofn.gov
+   * jq ako query tool z command line
+   * JSON Pointer aby sme mali iba nejake values from JSON nieco ako XPath 
 
+### JSON Schema
+   * motivacia je annotace a taktiez validacia co tam ma nemusi byt atd
+   * nieje to standard still under development
+   * type nam hovori co za typ riesime napr object
+   * properties urcuju co tam moze byt v tom objekte a potom ich napr type alebo description rozne properties mozeme ma numerical constrains maximum minimum atd
+   * required je list poloziek ktore tam su povinne
+   * list validation cez napr maxItems contains uniqueItems pre urcity property
+   * tuple validation kde kazdy jeden v poly vieme validovat aky ma typ cez "items" : [{"type": "number"} ...., {"type": "string"}]
 
