@@ -175,4 +175,206 @@ Slovnik Simple Knowledge Organization System (SKOS)
 Slovnik GoodRelations (jedna sa eshopov a E-Commerce)
     * zaklad tvori gr:BusinessEntity gr:PorudctOrService gr:Offering a gr:Location
     * gr:OpeningHoursSpecification je linknute na jednotlive dni
-    *  
+    * gr:QuantitativeValue || gr:QualitativeValue
+
+Slovnik Wikidata
+    * strukturovana databaza
+    * nejedna sa o texty ale skor o fakta
+    * DBpedia/Wikidata qearable with SPARQL
+    * Mame Q a P cisla ktore sa pouzivaju na mapovanie na predikaty a tak dalej cize niektore query niesu citelne
+    * qualifiers upresnuju napr nie sestra ale mladsia sestra
+    
+## Prednaska 5.
+
+LPG sa nehodi pro propojene data
+RDF a jeho serializa sa hodi pre grafove data, kazdy uzel a hrana ma svoje URI
+
+### LPG (Label Property Graph)
+  * Nehodi sa na priemery a vypocty na to su lepsie tabulky
+  * Skor sa hodi na relacie medzi vecami infrastruktura mesta
+  * **pokial connections between entities are as important or more important then entities themselves** pokial riesime viacej nez 5 joinov lepsie asi graf
+  * self-referencing management hierarchies alebo do hlbky priklad so zlatom a cipami
+
+Vrcholy a hrany niesu reprezentovane IRI a hrany maju meno a moze to byt multygraf
+Vrcholy mozu mat zoznam attributov a hrany mozu mat tiez attributy
+Nemame ziaden structure takze mozeme mat ine attributy pri inych vrcholoch
+Vrcholy od nazvu **labeled** maju oznacenie lablom napr vrchol :Person vrchol moze mat viacej lablov
+
+Suhrn:
+   1. Oriented multigraf
+   2. Nodes have set of labels
+   3. Edges have labels
+   4. Nodes and Edges ahve sets of key-value properties
+
+### Cypher
+   * Query language for LPG
+   * CREATE (:Person {name: 'John'}) -[:Follows]->(:Person {name: 'Jozo'})
+
+Pouzivanie MATCH noodle Return variable ako select. napr MATCH (p:Person)-[:Owns]->(c:Camera) WHERE p.name = 'James' return c
+MERGE funguje pokial uz je v zozname veci tak nic nerobi inac spravi CREATE
+
+Dobry usecase je najkratsia cesta v grafe to vieme dostat cez: 
+MATCH (Kevin:Person {name: 'Kevin Baco'}), (Alpa:Person {name: 'Al Pacino'}), p = ShortestPath((KevinB)-[:ACTED_IN*]-(Al) RETURN p
+
+NULL nemame skor je to not bound a taktiez regularne vyrazy cez =~ 'M.*'
+Friend of a friend vieme spravit cez MATCH (p:Person {name: 'Vit'}) --(other-person)-->() WITH other-person, count(*) AS foaf WHERE foaf > 1 RETURN other-person.name
+
+Mozeme nacitat cez CSV files pomocou LOADCSV WITH HEADERS FROM 'file:///orders.csv' AS row
+Podporuje to viacero grafovych algos
+
+### GQL Standard
+pracuje sa na Standarde pre querovanie LPG
+
+### Srovnanie RDF A LPH
+   * RDF je made for web and distribued data, globally reused RDF vocabularies, IRIs for everything. focused on linking data from various publishers
+   * LPG made for centralized graph data, local node lables and edge types. every database instance uses different relationship types and node lables, better for graph algos
+
+### RDF* (rdf star)
+rozsirenie RDF pricom pridava quoted triple kde potom mozeme pouzit << _a: :name "Alice">> :statedBy :Bob .
+Je to based na **RDF reification** ale slabsie kde budeme mat nieco ako:
+```
+_:stmt1 <rdf:type> <rdf:Statement> .
+_:stmt1 <rdf:subject> <John> .
+_:stmt1 <rdf:predicate> <hasAge> .
+_:stmt1 <rdf:object> "30" .
+```
+
+## Prednaska 6.
+
+### XML
+   * Smer vazby urcuje ako nasa xml schema bude vyzerat niekedy potrebujeme viacero schem aby sme boli schopny popisat cely graf
+   * XML v 1.0 sa pouziva Unicode 2.0
+   * XMLS is **well-formed** if it complies with XML syntax rules
+   * it is NOT good to represent tabular data
+   * Pouziva sa na konkretne formaty napr SVG
+   * Parsujeme cez DOM SAX StAX LINQ
+   * Validujeme cez DTD Schematron alebo XML Schema
+   * Querying cez XPath alebo XQuery
+   * Transofmation cez XSLT
+   * Dobre sa cez to posielaju message cez internety
+   * XML is valid if it validates agains an XML schema for instance XML Schema or DTD
+
+### Qualified name (QName)
+   * uniquely identify elements, typically in the context of namespace
+   * vychodzi namespace je ak to definujeme v <root xmlns="http://example.orf"> potom ostatne v xml spadaju pod tento namespace ak nieje specifikovane inak
+     
+```
+<book xmlns:fiction="http://www.example.com/fiction" xmlns:science="http://www.example.com/science">
+<fiction:title>The Great Novel</fiction:title>
+```
+
+CDATA section --> <![CDATA[<greetings> Heloo !!! ]]> treated as a string
+Pre language specification pouzijeme language tag --> xml:lang="de"
+
+XML processing instruction (PI) cez <?xml-stylesheet type="text/xsl" href="media-types.xsl"?>
+
+process of FLATTENING when we take something hierarchical and try to fit it into table exmaple: types of coffe and when he drinks it
+
+### How can we process XML data in an application?
+   1. Document object model (DOM)
+      - does not work for streams
+      - does not work for large files
+      + supports arbitrary querying (aka random access) eg XPath / consumers/consumer[1]/name
+   2. Simple API for XML (SAX)
+      + works for streams
+      + works for large fies
+      - does not support effective arbitrary querying
+      SAX parser pushes events to your code until it reads the whole file
+   3. Streaming API for XML (StAX)
+      + works for streams
+      + works for large data
+      - does not support effective arbitrary querying
+        our code pulls events from the StAX parser, so we can
+
+### Serialization of XML
+XML Syntax
+   * z RDF do XML
+   * pozriet si to este trochu viacej
+     
+### Formats where XML is used
+ SVG 
+ ```
+<svg height="210" width="600">
+   <polygon points="200.10 250.190 160.210"
+style="fill:lime;stroke:putple" />
+</svg>
+```
+OOXML - open office xml format
+RSS alebo Atom sluzici pre Web Feeds
+
+### Validation with XML Schema
+   * we can link to XML Schema without using a namespace with XSD like to xsi:noNamespaceSchemaLocation="schema2.xsd">
+   * napr editentiat.cz to endcoduje base64 xml trvaleho bydliska
+   * Basic Principles
+        - Definitions of Data Types Elements or Attributes
+   * Simple type is needed when it does not have sub elements or attributes
+   * mozeme pouzit simple type restriction
+
+ak to ma iba attributy ale nie subelements wi use simpleContent napr na restrictions a extension opakom je ComplexType ak chceme sibelements
+
+Complex Type - squence & element order dava pozor ako to mame za sebou poukladane elementy a ci su za sebou spravne 
+Complex Type - choice je valid ak je iba jedno z nejakuch 
+Complex Type - all musia byt vsetky poradie nezalezi
+
+cez ref sa odkazujem na uz zadeklarovany element
+
+ak nase XML pouziva nejaku schemu (XSD) tak potrebujeme to zadefinovat v XML cez xsi:schemaLocation
+
+## Prednaska 7.
+Hierarchical data formats XPath and XSLT
+### XPath
+   * Query language on XMLs
+   * napr /catalog/datasets/dataset/title
+   * mozeme pouzit aj relative path a nezaciname cez lomitko ale rovno title[@xml:lang="en"]/text()
+   * predicate --> /catalog/datasets/dataset/title[@xml:lang="en"]/text()
+Pohibujeme sa cez osy a zahladnou je child ale default vieme omitnut  --> axis::node-test [predicate1]...[predicateN]
+napr /child::catalog/child::datasets
+
+v child ose su iba elementy cize vieme spravit catalog/child::*
+
+Axes - descendant - potomky
+
+/catalog/descendant::title --> je jedno ako hlboko no zamerujeme sa na elemnt s nazvom ak spravime /catalog/descendant::* tak nam to vrati vsetky pod elementy catalogu
+
+Axes -attribute ma skratku /@ cize ak chceme vsetky attributy catalogu a jeho podelementov tak spravime /catalog/descendant::*/@* ale taktiez vieme napisat /catalog/descendat::*/attribute::*
+
+Axes - preceding-sibling - predchodzi surodenec
+Axes - descendant-or-self mozeme pouzit ak chcem vsetky titly je to jedno ake zanorenie tak /catalog/descendant-or-self::title
+
+Axes - self/parent
+
+
+VSETKY AXES SU --> ancestor | preceding-sibling | self | following-sibling | parent | child | attribute | namespace | preceding | following | descendant
+
+okrem os vieme pouzit funkcie a to je:
+   * name()
+   * position()
+   * last()
+
+document order je ako priradzujeme cislo element a ideme pocitat znacky od hora po spodok
+XML Infoset
+   * set of definitions for referring to infomation in well-formed XML document
+   * created with no particular processing language in mind
+
+### XSLT
+   * ak chceme HTML reprezentaci dokumentu z XML
+   * input is multiple or single XML and the output is one or more HTML RDF Turtle or TXT
+   XSLT stylesheet
+      * is an XML document
+      * stylesheet root element
+      * set of templates
+     * pouziva to XPath match na to aby sme vylnili veci a potom xsl:value-of select="co chceme"
+   XSLT template
+      * matches part of input XML document using XPath expressions
+      * produces output text
+   XSLT processor
+      * goes through an input XML document
+      * tries to match templates
+
+
+Purpose of <xsl:apply-templates>
+The <xsl:apply-templates> element instructs the XSLT processor to:
+   * Select nodes in the XML document based on the current context.
+   * Apply templates to those selected nodes, based on matching patterns defined elsewhere in the XSLT stylesheet.
+
+
