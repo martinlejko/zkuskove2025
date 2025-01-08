@@ -24,7 +24,7 @@ Open vs. closed
 machine readability
 * Skor sa to viaze na jednu instanciu datoveho suboru nez formatu, a ci datovy format bol dobre pouzity
 
-binaty vs text-based
+Binary vs Text-based
 * Binarne subory su definovane na bit by bit leveli znamena ze niesu txt files a su viewed by *HEX EDITORS*
 * Text based encoded into 1s and 0s using characters also viewable by hex editors ale zvycajne su to charaktery na riadkach napr using ASCII
 * New line representation CR / LF
@@ -38,7 +38,6 @@ BOM - Byte order mark
 * Aby sme vedeli ako si to posielat, kto spravil chybu, kto to zaplati
 * Publikovanie dat standardizovane je viac cost effective
 
-
 RFC vs Web Standart
 * RFC je iba request vo vyvoji takze nemusi sa stat standardom
 * Pri RFC zvycajne chceme pouzivat presne upresnenia napr MUST, SHALL NOT a su tam nejake requirement levels 
@@ -49,6 +48,7 @@ Uniform Resource Identifier -- Uniform Resource Locator -- Internationalized Res
 
 Rozdiel medzi URI a URL je ze URL nam da link este na lokaciu toho objektu na internete
 IRI a URI tak nam IRI z casti pouziva UTF8 takze mozeme pouzit emoticoni a tak dalej
+
 
 ## Prednaska 2
 Graph data representation, kde vieme popisat grafom nejake tvrdenia napr The catalog has title "my catalog". kde budeme mat 2 vrcholy The catalog a "my catalog". pricom je to spojene hranou has title
@@ -401,4 +401,45 @@ Prednaska 8.
    * podpora pre external schema aby sme nemuseli mat brutalne velke fily kde si vieme spravit "$ref": "https://definicia-schemy.json""
 
    * ak chceme validovat nieco vacej ako zakladne typy pouzivame formats to nam umoznuje validovat --> iri uri date-time email a tak dalej
+
+### JSON-LD
+    * json for linked data
+    * do obycajneho jsnu pridame JSON-LD @context a spravime JSON interpretable as RDF model pomocou mappingov by @keywords
+    * pomocou @id vieme priradit konkretne IRI
+    * @type pridanie IRI classy ktoreho typu je vieme do @context pridat mapovanie ako je "Restaurant": "http://schema.org/Restaurant" a potom v @type: pouzijeme rovno iba Restaurant
+    * relativne IRI cez @base: "http://exmaple.org"
+    * compact IRIs cez "foaf": "http://example.ordf/foaf" a potom niekde foaf:name : "Dave"
+    * scoped @context pre rozne zanorenia
+    * @language pre language tagy
+    * mozeme pouzit @reverse na to kedze mame parent ale nie child tak to reversneme cez @reverse : "http://vocab.org/#parent"
+    * aliasing keywords znamena vztahy medzi napr url : "@id" ak niekomu vadia zavynace tak si to vieme premapovat na slova
+    * taktiez vieme pridat external context ako jsonld
+
+## Prednaska 9.
+### Relational data models -- CSV
+    * PRED csv BOL dsv COMES FROM unix and separator is the main thing in ICO it is a pipe
+    * TSV tab separated tabulka a odellovace su taby
+    * csv nieje dobre nacitavat po riadkoch kedze existuju " a "" cize to moze jeden riadok byt roztiahnuty na viacero
+    * rovnake datove typy ako xml a to cez xsd:date 
+    * redundance je ked nieco nieje zavysle na tom druhoom cize vieme rozdelit to viacerych csv filov
+    * vieme cez URL vybrat iba napr riadok a stlpec alebo cell cez link/link#col-2 alebo #row-3 #cell-4,1 ak nepodporuje to RFC tak to da cele
+
+### CSV on Web
+    * List of standards and recommendations (primar and a set of 4 w3c recommendations
+    * Model for tabular data / vocabulary RDF for tabular data / generating a JSON from tabular data / generating RDF from tabular data
+    * JSON-LD describtor for CSV helps with annotation validation and trasnforming to different formats
+    * znova pouzivame @context kde definujeme @base alebo @lang the base is for metadata not data
+    * @id je tableGroup pre viacere tabulky v JSON-LD descriptor
+    * titles mozeme mat s viacerymi nazvami pre ine jazyky alebo list slov 
+    * podpora pre primaryKey a foreignKey tak isto aj so sechamatami
+    * CSVW podporuje formu dialectu kde to bude spracovavat aj zle CVS po nastaveni dialektu
+    * pri vytvarani RDF spravime blank node a pridame 
+    * virtual collumn is used for adding data when transforming CSV
+
+Transformations - we have url of the script tempalte we have script format output format
+Taktiez mame podporu pre notes a obojstranne tablky
+
+pred CSVW bolo frictionlesstable.io mame JSON descriptor
+
+## Prednaska 10.
 
