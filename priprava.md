@@ -13,6 +13,7 @@ Conceptualnym pohladom na data
 Vtedy ked sa bavime s niekym kto nieje ITak ale je domenovy expert
 
 Data Models vs Data Formats vs Data Schemas
+
 Data Models --> Dava nam nastroje napr vrcholy a hrany alebo tabulky  cez ktore vieme popisat nase data
 Data Formats --> Reprezentacie dat cez nastroje kde ideme ulozit ich do suboru alebo nejak inac serializovat do suboru ktory vieme posielat
 Data Scheme --> Popis a ohranicenie pre datove formaty aby data boli lepsie popisane a validatovane (Meta-formats) 
