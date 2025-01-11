@@ -151,6 +151,7 @@ To riesi World Wide Web kedze
 
 SPARQL --> query language pre RDF data
 SPARQL endpoint
+
     * HHTP based web service
     * input query - output RDF/CSV
 
@@ -162,11 +163,13 @@ STRASNE VELA AKO QUEROVAT SPARQL
 ## Prednaska 4.
 
 Slovnik *Dublin Core* --> need for standardizationa
+
     * ma 2 namespacy dc:prefix a rozsirenie dcterms:prefix 
     * zakladnych 15 pojmov
     * robili to knihovnici tak ma to dost podobny slovnik spojeny s knihami
 
 Slovnik Simple Knowledge Organization System (SKOS)
+
     * popisuje vycty alebo hierarchie ciselnik znamek. tyo zvierat atd
     * skos:Concept prefix
     * aby to citelne nazvy tak pouzijeme skos:prefLabel to je preferovany mame taktiez skos:altLabel alebo skos:hiddenLabel
@@ -176,11 +179,13 @@ Slovnik Simple Knowledge Organization System (SKOS)
     * Mappings s exacMatch alebo iba Match
 
 Slovnik GoodRelations (jedna sa eshopov a E-Commerce)
+
     * zaklad tvori gr:BusinessEntity gr:PorudctOrService gr:Offering a gr:Location
     * gr:OpeningHoursSpecification je linknute na jednotlive dni
     * gr:QuantitativeValue || gr:QualitativeValue
 
 Slovnik Wikidata
+
     * strukturovana databaza
     * nejedna sa o texty ale skor o fakta
     * DBpedia/Wikidata qearable with SPARQL
