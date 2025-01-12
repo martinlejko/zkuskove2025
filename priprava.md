@@ -450,4 +450,69 @@ Taktiez mame podporu pre notes a obojstranne tablky
 pred CSVW bolo frictionlesstable.io mame JSON descriptor
 
 ## Prednaska 10.
+### Spacial data
+    * To answer how far it is? what way to take? What is visible...
+    * implicit geodata --> coordinates directions distance
+    * explicit geodata --> reference adress geographical name
+    * reference ellipoid tries to bound as much as posible to the shape of earth 
+    * datum is reference to som other object plane cylinder w/e
+    * vector and raster representation
+    * Standart is Well know text we have POINT(X, Y) and LINESTRING(X Y, X Y)
+    * Spacial data logic mame geometry a potom other attributes a to je ze co za elektirinu ma dom  ci ma plyn vodu a tak dalej 
 
+### Geometry Markup Language XML based format with described by some xsd files
+    * very robus
+    * supports various CRS various object and 3D
+    * Writing method is quite complicated
+    * Defined in OCG standard
+    * It is used as a standard in Europe
+
+### GeoJSON 
+    * json based
+    * faster, much less space
+    * own geometry representation
+    * does not support more other CSR then WGS-84
+    * visualisation supported on github
+    * geometry object points multipoints polygons multipolygon linestring multilinestring
+    * popular to share on the internet
+
+### Shapefile
+    * Lot of issues
+    * only one feature per database
+    * restricted chars per column name
+    * consists of multiple files
+    * native format for most GIS in czech
+
+### OGC GeoPackage
+    * SQL database
+    * fastest and complex
+    * supporsts simple and complex geometry
+    * raster and vector in one file possible 
+
+### CSV
+    * excel friendly
+    * very ez
+    * not recommended
+
+### GEO WGS-84
+    * only represents lattitude and longitude
+
+### GEOSPARQL
+    * overcomplicated
+    * very powerful for ontology and querying
+### GEOJSON-LD
+    * same as JSON-LD but for geo json
+
+
+### Operations on geo data
+    * Spacial relations between two topological objects includes withing on touches , crosses overlaps etc.
+    * we have topological directional(left/right) distance(closer further) and temporal(in one hour)
+
+Spacial operations
+    * buffer -> prida buffer locky
+    * Union difference a intersection z setov 
+    * Clip -> vyrez iba jedneho objektu predstavme si stvorec na nom kruh a odsstranime kruh tak nam ostane nejaky vyraz stvorca
+    * Distance -> closest distance
+    * Convex Hull -> return object only with convex angles
+    * baunding box -> minimal rectengular area
+    * 
