@@ -87,3 +87,86 @@ Ako vieme zapisat constantnu hodnotu:
 * METHOD INLINING --> miesto volanie methody a nadbytocnych CALLov funkcie tak sa rovno do methody vlozi ten uzitocny kod
 
 * tabulka virtualnych method
+
+## Prednaska 7
+
+* rozdiel vo volani virtual a non virtual method je ze pri normalnej sa vie spravit method inlining no pri virtiualnej sa robi CALL VIRT
+* Dynamic PGO zbiera statisticky nie len ze kolko krat sa to vola ale co bolo za instancie pouzite
+* napr hot path pre najviac volani kod a vie spravit de-virtualizaci to robi JIT
+* sealed zakazuje rozsirovanie
+* pozriet znova na tabulky
+
+## Prednaska 8
+
+* base pouzivame ked sa chceme pozriet na predka spatky a zavolat jeho methodu
+* aj pre nevirtualne methody prekladac generuje CALL VIRT 
+* aby JIT zistil s metadat to zoptimalizoval
+* CALL methoda sa vygeneruje iba v pripadae ze volame base inac je to stale CALL VIRT az po optimalizaciu
+* ak napiseme methodu do gettru a settru tak sa len vygeneruje funkcia ktora sa vola get_menoProperty a to iste aj pre set
+* lambda => ako return statement a to ze nemusim pisat return a potom napr public int age => _oldAge robit to ze to ma iba getter nie setter musel by som spravit public int age { get => _oldAge, set => 10} ak chcem oba
+
+* zivotnost promnennych --> nebat sa kratnych zivotnosti
+
+## Prednaska 9
+
+* nieje povolenne mat premenne s prekryvajucimi sa zivotnostiami 
+* takziez to ma errory s nested blockami alebo outer blockami
+* ify nepozerame ze jaky maju vysledok kedze by to nebolo deterministicke
+* BOXING ked hodnotu value typu prirazdujeme do referenciho 
+* robime to preto lebo si vieme spravit object O pre ktory spravime ToString a potom vieme zaboxovat don vsetko na co vieme potom volat tuto virtualnu methodu napriklad
+* ducktyping pomocou params v konstructore funkcie kd potom nemusime pisat typ
+* trunkacation z longu na int, nikdy sa nedeje unboxing a trunkacion naraz preto musime najprv spravit unboxing a potom casting
+
+* tracking referencie --> nata na GC heap aleo field, moze to byt adresa ale neda sa zistit
+* na cele fieldy mozeme iba nie napr na 2B od konca
+* pomocou boxingu vieme dat hodnotovy typ na GC heap
+
+## Prednaska 10
+
+* call by refeerence mame pomocou ref int x
+* referrencia je pointer na adresu
+* out je nieco podobne no nevyzaduje inicializovanu premennu
+* ale aspon daco sa musi zapisat za beh tejto methody do out variable iba hapy pathy moze skoncit throwom
+
+* _ ako vyraz discard
+
+## Prednaska 11
+
+* Arrays je rozdiel medzi List
+* Ak mame int[] a List<int> ak povieme pri liste a[0] tak je to iba syntax skratka za nejaky getter ale pri array pracujeme s hodnotou. Preto nemozeme pouzit tracking ref lebo to nereprezentuje nejaku hodnotu v poly ale 
+* s goto mozem skakat iba vo vnutry funkcie nie z funkcie do funkcie a potom este zo zatvoriek
+* potom switch case 
+
+## Prednaska 12
+
+* ked switch nema vetev kde ist tak sa vyhodi vynimka
+* tracking referencie nie v structure a classe lebo ma to dlhzsiu zivotnost jak nieco co to vola
+* ref struct je value type ktory moze mat tracking ref ale potom tu celu strukturu mozeme pouzivat iba tam kde tracking ref
+* Span<T> je readonly ref struktura ( bezpecny pohlad do pamati ) s global indexerom na jednotlive objekty
+* bezpecne pretoze mame dlzku cize nepozeme inde na pamat
+* this[index] ma range check az ked span ref sa zrusi tak GC heap to vie zmazat
+* span je stale na stacku a nemoze byt na heape
+* potom existuje ReadOnlySpan
+
+* advance featura stackalloc --> ma zivotnost do konca funkcie
+
+* int[] a = [1,2] je collection initializor
+* collection initializator je compatible so Spanom cize mozeme spravit Span<int> l = [1,2,3] co spravi optimalizaciu a nebude to allocovat na heape ale iba na stacku
+* spread up operator vieme spravit cez ... kde ak mame int[] l = {1,2,3} tak vieme zapisat { -1 , ... l, -2, ... l } 
+* ak nevie ci je stack dostatocne velky tak sa to naspat da na pole inac sa pouzije stack alloc je to tym ze nechce aby sa vyhodila stack overlow exception
+* preto treba sa zamyslat ked pouzivame tie collection inicializator kedze nevieme co sa z toho pouzije alebo aspon musime nad tym rozmyslat
+
+* pattern matching na array a so spread operatorom if (a is [>2,< 1, ... int[] restArray, int x]) ---> kde restArray je copia a vieme ju menit a vypisovat ako copiu listu
+* to je pre list a array ale pre Span je to iba pohlad cize nie copia
+* cize zmeni sa to povodne
+
+* methoda deconstruct .deconstr kde ma vystupne parametry 1..n
+* tieto deconstructory sa dogenerovavaju k record classam
+* pre normalne classy si vieme dopisat methody Deconstruct(out var x, out var y) kde povieme ze vieme sa dekonstructovat do nejakych veci
+
+* Exceptions --> mame to mat optimalizovane ze sa vynimky nedeju a ked sa netrigruje tak dava minimalny overhead
+* ked sa hitne catch musi sa generovat stacktrace a preto je to narocne
+
+## Prednaska 14
+
+*
