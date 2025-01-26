@@ -169,4 +169,27 @@ Ako vieme zapisat constantnu hodnotu:
 
 ## Prednaska 14
 
-*
+* SOH a LOH kde objekty sa povazuju za velke ak maju nad 85_000B 
+* v server mode mame vlakna separatne na waiting GC
+* v backend mode sa GC spravi na vlakne ktore ho sposobilo
+* radsej to rozseka v case ako vsetko naraz aby nas to nespomalovalo
+* ak fyz pamat dochadza posle sa signal na system collection runtime a spusti sa garbage collection
+* GC roots z kade moze viest referencia na GC heap napr static fields 
+* mark faza kde prechadza zo vsetkych GC roots po objektoch a markuje kolko referencii na nich vedie 
+* Ccko ma rychlu dealokaciu no drahsiu alokaciu kedze vznikaju diery na heape
+* heapcompactingu potom vieme pagam rychlo pozicat pamat
+* pocas heap compactingu musime prejst vsetky referencie a prepisat ich kedze mozu viest na ine miesto 
+* preto je dobre ze nevifdime do pamate 
+* dobre su short lived objekty lebo ked sa vela vyskrta je kratka bfaza coalescovania 
+* nemusime sa bat allocovania no pri dealocovani mame davat pozor
+* generacni GC je generace 0 generace 1 a generace 2
+* zaciname na 0 a potom prepada do dalsej generace 
+* mame to poznacene a vieme efektivnejsie prechadadzat cez haldu 
+* region 0 a 1 ma nejaku velkost a ked sa zaplni tak sa spusti GC na gen 0 a 1 
+* ked sa neuvolni dost miesta tak incrementujeme gen az kym sa uvolni
+* memort leak akvedie referencia na short lived object z objektu generace 2 tak potom bude zit rovnako ndlsho ako ten stary cize pozor
+* na Large object heap sa nerobi compacting pretoze kopirovanie by trvalo prilis dlho cize tam vznika fragmentacia 
+* a malo by to byt ze Gen2 hlavne 
+* mozeme donutit LOH aby sa kompaktovala niekedy
+* alebo vynutit GC na nejaku generaciu pomocou collect 
+* 
