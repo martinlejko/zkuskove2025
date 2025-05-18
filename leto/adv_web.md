@@ -70,4 +70,46 @@ PSR-4	Autoloading Standard	Defines how classes and namespaces should map to file
 
 ### Patterns
 
+### Data Model
+* better represents data entities in code
+* benefiting from inheritance
+* promotes encapsulation and hides details of actual data
+* more readable and self documenting
+* object persistance and we can flush object storage
+* object relations
+
+### Object-relation Mapping (ORM)
+* no need for SQL and less error prone
+* we can use PHP Doctrine here basically EF Core it is generated from php classes
+    * migration management
+    * requires mapping XML, YAML attributes
+
+### NotORM
+* something like linq in C#
+* between Doctrine and DiBi
+* SQL queries are not written in strings but semi-aitomatically builder query
+* does not have to know complete DB schema unlike ORM
+
+### Linters - Dependency Management - Dependency monitoring 
+
+## 3. Prednaska
+
+
+
+
+
+
+
+
+
+
+
+### 5. Prednaska
+* JQuery (DOM modification, event handling) --> D3.js(visualization library[bring data to life], event handling, compute and transition) --> Angular.js(solves view and controller separation as we want to make the changes to the HTML autoamtic,  enhancing the HTML with elements that we can then program in the javascript files, introduces two data binding as we sync 2 data sources[between the HTML and JS], introducting dirtry checking and executes the watchers)
+
+
+* User Interface as function of application state
+    * This can become complex as watchers could be watching different watchers as we have different types of events
+    * Trying to solve it with states where the cycle would be          STATE -> UI -> EVENT -> CHANGE REQUERST <-(CYCLE)-
+
 
