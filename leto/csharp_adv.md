@@ -23,3 +23,16 @@ Explicitna konverzia je ak do string s = object tak az za runtime vieme co ten o
     * cize implementacia methody odstane genericka ale v CIL kode ak sa vola tato methoda tak sa tam doplna typ --> CALL Max<int>
         * ked sa dana methoda vola pozrieme sa ci JIT uz pre dany typ vygeneroval kod ak nie vygeneruje sa
     * ak pouzivame overload methody v generickej methode tak nedochadza k meneniu sa ale vyzera sa stale ta najgenerickejsia
+
+# 3. Prednaska
+* Compile time duck typing pre genericke methody v C++
+* Dynamic --> object + python ducktyping ON size mali by sme code nieco ako *void PostPackage(dynamic carrier){}*
+
+* rozdiel preco f<T>(T t) where T:I1 a f(I1 t) niesu rovnake tak pre f(I1) sa vygeneruje iba jedna varianta v CIL kode no pre genercike sa sice musi vygenerovat viac no vie sa to lepsie optimalizovat a taktiez nieje tam overhead boxingu ak by sme davali napr int co je value type to ref typu
+* Ale robit to genericky iba ak viem ze sa tam budu vela volat value typy
+* where podmienka pri generickych methodach pouziva AND cize f<T>(T t) where T:I1 AND I2 AND I3
+* genericke typy --> ak by sme mali Class X<T> tak sa to v CIL kode prelozi iba raz a keby ze to chceme niekde pouzit tak musime explicitne povedat s akym typom
+    * ak pride na to ze sa pouziva X<string> alebo X<int> tak sa vygeneruje novy CIL kod a tieto typy nemaju spou nic spolocne ani rodica
+    * strojovy kod sa JITuje iba ak je nutno napriklad ak by mala X<T> methodu m() a inicializujeme X<int> tak X<int>.m() sa neJITuje
+* su to zcela nezavysle typy a nemaju spolu nic spolocne!!
+* mozeme mat genericku methodu v generickej methode
