@@ -73,4 +73,16 @@ zaruci ze nemozeme volat methodu m2 na acku ani vo vnutri ani z vonku ide ju zav
     * napriklad imlementacia sorted dictionary kde mame disctionary a private class Node aby sme nic ine nerozbili
     * vieme naimplementovat private interface pre class A a nested classa B bude splnat tento kontrakt potom vieme volat tuto metodu iba v classe a ak by sme sa pozerali na classu B cez tento private interface
     * Ak predame nested classe B classu A tak potom B vie sahat na private veci classy A
-
+* ak ideme implementovat IEnumerable tak by sme mali pouzit nested typy kde ten IEnumerator ma byt private aby ho ludia nevedeli vytvarat len tak z vonku
+## Ako vyzera kontrakt Enumeratoru
+* mame 0 prvku --> .current ma vyhodit InvalidOperatorException
+               --? .current + .MoveNext() -> false + .current InvalidOperationException
+* mame 1 prvok --> .current + .MoveNext() -> true + .current prati prvy prvok .current vrati znova ten isty a ked dame move next tak vrati flase a .current znova vynimku
+     * mame este aj methodu reset tak by sa to malo cratit to prveho stavu
+* ak by sme robili ale Enumerator na flow dat z databazy tak by sme ho nechceli len tak zahodit kedze mozeme tam mat connection na databazu preto by sme mali implementovat taktiez IDisposable
+* concurent modification --> pokial prechadzame a nieco sa upravi v tejto kolekcii -> zvycajne nepodporuju kedze je to -> ak sa nieco take stalo by sme mali vyhadzovat exception
+      * vynimku mame vyhadzovat po modifikacii
+## For-each cyklus
+* c# sa nato pozera ako IE<T> ak budeme mat list<int> a pouzijeme *foreach(byte b in list<int>)* tak sa pouzije explicitna konverzia tym sa vygeneruje to ako private aby sme nemogli len tak sahat na ten enumertor
+* este pred tym vsetkym sa pozera na ducktyping -> ci vieme ziskat GetEnumerator() a az potom sa robia kroky pred. Ducktypingu vieme vyuzit cez extention methody kde budeme returnovat enumerator na nasom type
+* ak pouzivame foreach tak stale sa nam naalokuje na haldu ten enumerator ale vie sa to zoptimalizovat na to aby sa to prekladalo do for cyklu
