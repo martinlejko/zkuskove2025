@@ -86,3 +86,29 @@ zaruci ze nemozeme volat methodu m2 na acku ani vo vnutri ani z vonku ide ju zav
 * c# sa nato pozera ako IE<T> ak budeme mat list<int> a pouzijeme *foreach(byte b in list<int>)* tak sa pouzije explicitna konverzia tym sa vygeneruje to ako private aby sme nemogli len tak sahat na ten enumertor
 * este pred tym vsetkym sa pozera na ducktyping -> ci vieme ziskat GetEnumerator() a az potom sa robia kroky pred. Ducktypingu vieme vyuzit cez extention methody kde budeme returnovat enumerator na nasom type
 * ak pouzivame foreach tak stale sa nam naalokuje na haldu ten enumerator ale vie sa to zoptimalizovat na to aby sa to prekladalo do for cyklu
+
+# 7. Prednaska
+* iteratorove methody -> musi vracat IEtor OR IEtor<T> + aspon jeden vyskyt yeald return
+    * kedze spatna kompabilita tak ak volame current methodu bez toho aby sme predtym zavolali moveNext tak to vyhadzuje default hodnotu a na konci ak nieje yield return to returnutje poslednu hodnotu
+    * vsetka nasala logika je ulozena v moveNext cize pri inicializacii Enum.Get() sa neprechadza nikdy nas kod ak do tejto funkcie davame parametre tak tie sa zachytavaju cez varieable capture 
+* C# optimalizuje nas kod do stavoveho outmatu a stale sa nastavuje v switchy na stav -1 co je koncovy stav v pridapade ze poeracie urciteho stavu vyhodia vynimku
+* .ToList alebo ToArray robi eager evaluaciu a ked to nepotrebujeme je to zbytocne s pouzitim IEnumerable vieme spravit lazy yieldnut iba kolko potrebujeme a zahodit automat
+    * ak viem ze list budeme prechadazt viac krat a robit na nom nejaky algoritmus dava zmysel spravit eager a potom lazy uz nim prechadzat
+* pri linked liste je tazke povedat aky IEnumerable pouzit ci to je IEnum Tciek alebo nodov preto tam nieje takyto interface
+* aby sme nemuseli pouzivat goto tak existuje yield break a ten nas vie stale hodit do koncoveho stavu
+
+# 8. Prednaska
+* IEnumerator a IEnumerable<T> Range(from, to)
+* IEnumerable sa rozseka na get enumerator - enumerator kde bude methoda move next ktora v sebe bude mat stavovy automat a taktiez sa capture copy napriklad parametrove hodnoty
+    * msutna trieda enumerator recapturuche znova params aby nebol zielany stav ak by sme vytvarali viacero enumeratorov
+* c# to optimalizuje a spraja tieto 2 interfacy dokopy  
+
+# 9. Prednaska
+* typ delegate - ref type - delegate int D(meno methody bez ()) - ak by sme tam zatorky davali to znamena ze tu methodu volame v konstruktore delegata
+* delegat ako objekt ma --> syncblock a ref type |function pointer, taktiez this na class ktory sme pridali kedze delegati su immutable tak musime vytvorit noveho aby sme pozmenili this | method info po zavolani po prvy krat tak sa tam ulozi
+    * pozor delegat robi s inou instanciou cez this takze nemenia sa hodnoty pre tu povodnu 
+    * syntax skratky su d1 = new Delegate(m) je skoro to iste ako d1 = m len ta prva hovory ze chce novu instanciu a ta druha nejakuk
+    * taktiez ak mam d1.invoke(2,3) je to iste ako d1(2,3)
+    * ak mame delegotv s rovnakym kontraktom in and out tak nieje to to iste priklad ak mame strukturu meters and seconds nieje to to iste aj ked struktura moze byt rovnaka
+* delegate void Action() a delegate TResult Func<TResult>() pre generickych delegatov
+
